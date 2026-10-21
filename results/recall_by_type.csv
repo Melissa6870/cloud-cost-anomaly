@@ -1,0 +1,4 @@
+model,spike,drift,idle
+Threshold baseline,0.9767,0.5647,0.8204
+Isolation Forest,1.0,0.5537,0.9839
+XGBoost,1.0,0.8408,1.0
