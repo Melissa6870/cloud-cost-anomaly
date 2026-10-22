@@ -95,7 +95,7 @@ def window_errors(model, x, batch=2048):
     return np.concatenate(out)
 
 
-def run(train, test, seed, epochs, lr=1e-3, batch=256):
+def run(train, test, seed, epochs, lr=1e-3, batch=256, verbose=True):
     torch.manual_seed(seed)
     np.random.seed(seed)
     scalers = fit_scalers(train)
@@ -118,7 +118,8 @@ def run(train, test, seed, epochs, lr=1e-3, batch=256):
             optimiser.step()
             total += loss.item() * len(xb)
         losses.append(total / len(x_train))
-        print(f"  seed {seed}  epoch {epoch + 1:>2}/{epochs}  loss {losses[-1]:.4f}")
+        if verbose:
+            print(f"  seed {seed}  epoch {epoch + 1:>2}/{epochs}  loss {losses[-1]:.4f}")
 
     # Threshold: flag the same share of hours as the anomaly rate seen in training
     contamination = float(train["is_anomaly"].mean())
@@ -129,7 +130,7 @@ def run(train, test, seed, epochs, lr=1e-3, batch=256):
     types = test.loc[test_idx, "anomaly_type"].values
     params = {"window": WINDOW, "hidden": 64, "latent": 16, "epochs": epochs, "lr": lr,
               "batch": batch, "threshold": round(float(threshold), 5)}
-    return evaluate(y, pred, scores), pred, types, losses, params
+    return evaluate(y, pred, scores), pred, types, losses, params, scores, test_idx
 
 
 def main():
@@ -149,7 +150,7 @@ def main():
     rows = []
     for seed in range(args.seeds):
         start = time.time()
-        m, pred, types, losses, params = run(train, test, seed, args.epochs)
+        m, pred, types, losses, params, _, _ = run(train, test, seed, args.epochs)
         m.update({"model": "LSTM Autoencoder", "seed": seed, "train_test_seconds": round(time.time() - start, 2)})
         for kind in ["spike", "drift", "idle"]:
             m[f"recall_{kind}"] = pred[types == kind].mean()

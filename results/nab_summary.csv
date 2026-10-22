@@ -1,0 +1,5 @@
+model,precision,recall,f1,auc_roc,fpr
+Threshold baseline,0.3546,0.3654,0.1985,0.5197,0.2938
+Isolation Forest,0.2129,0.321,0.19,0.5774,0.2706
+XGBoost,0.2166,0.3875,0.1961,0.5888,0.3008
+LSTM Autoencoder,0.2118,0.3451,0.2063,0.5952,0.2405

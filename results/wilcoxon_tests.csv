@@ -1,0 +1,7 @@
+model_a,model_b,median_f1_a,median_f1_b,W,p_value,days,p_holm,significant_0.05
+Threshold baseline,LSTM Autoencoder,0.80659,0.36629,0.0,1e-05,26,7e-05,True
+XGBoost,LSTM Autoencoder,0.98416,0.36629,0.0,1e-05,26,7e-05,True
+Isolation Forest,XGBoost,0.55118,0.98416,0.0,2e-05,26,7e-05,True
+Threshold baseline,Isolation Forest,0.80659,0.55118,2.0,4e-05,26,0.00011,True
+Threshold baseline,XGBoost,0.80659,0.98416,0.0,9e-05,26,0.00018,True
+Isolation Forest,LSTM Autoencoder,0.55118,0.36629,57.0,0.00453,26,0.00453,True
