@@ -1,0 +1,8 @@
+metric,value
+incidents,62.0
+real incidents,50.0
+false alarms,12.0
+correct action (all real),0.96
+correct action (drift),1.0
+correct action (idle),0.875
+correct action (spike),0.9545

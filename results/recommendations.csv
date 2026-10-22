@@ -1,0 +1,63 @@
+resource_id,service,size,start,end,hours,detected_type,recommended_action,priority,estimated_waste_usd,true_type
+ec2-05,EC2,xlarge,2026-03-23 17:00:00,2026-03-27 12:00:00,90,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,High,38.7181,drift
+rds-14,RDS,medium,2026-03-05 09:00:00,2026-03-09 03:00:00,90,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,High,19.1498,drift
+ec2-09,EC2,medium,2026-03-22 00:00:00,2026-03-25 18:00:00,90,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,High,12.0664,drift
+ec2-09,EC2,medium,2026-03-27 13:00:00,2026-03-29 16:00:00,52,idle,Rightsize to a smaller instance or stop it outside working hours (e.g. medium -> small),High,10.6288,idle
+ec2-01,EC2,medium,2026-03-29 07:00:00,2026-03-31 07:00:00,49,idle,Rightsize to a smaller instance or stop it outside working hours (e.g. medium -> small),High,9.848,idle
+ec2-05,EC2,xlarge,2026-03-05 03:00:00,2026-03-05 07:00:00,5,spike,Investigate the runaway process; set an auto-scaling maximum and a budget alert,High,7.9452,spike
+ec2-11,EC2,xlarge,2026-03-30 04:00:00,2026-03-30 06:00:00,3,spike,Investigate the runaway process; set an auto-scaling maximum and a budget alert,High,7.9452,spike
+ec2-03,EC2,medium,2026-03-19 01:00:00,2026-03-20 23:00:00,47,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,High,7.4014,drift
+rds-15,RDS,small,2026-03-18 15:00:00,2026-03-20 08:00:00,42,idle,Stop the idle database or move it to a smaller instance class,High,7.3417,idle
+ec2-04,EC2,small,2026-03-07 05:00:00,2026-03-11 10:00:00,100,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,High,6.9202,drift
+ec2-08,EC2,small,2026-03-21 19:00:00,2026-03-24 20:00:00,72,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,High,6.6516,drift
+ec2-00,EC2,large,2026-03-22 08:00:00,2026-03-22 11:00:00,4,spike,Investigate the runaway process; set an auto-scaling maximum and a budget alert,High,6.47,spike
+ec2-06,EC2,large,2026-03-06 01:00:00,2026-03-06 05:00:00,5,spike,Investigate the runaway process; set an auto-scaling maximum and a budget alert,High,6.1285,spike
+rds-14,RDS,medium,2026-03-20 04:00:00,2026-03-20 08:00:00,5,spike,Investigate the runaway process; set an auto-scaling maximum and a budget alert,High,4.9985,spike
+ec2-04,EC2,small,2026-03-16 13:00:00,2026-03-18 13:00:00,49,idle,Rightsize to a smaller instance or stop it outside working hours,High,4.7232,idle
+ec2-01,EC2,medium,2026-03-19 01:00:00,2026-03-19 06:00:00,6,spike,Investigate the runaway process; set an auto-scaling maximum and a budget alert,High,3.6359,spike
+s3-19,S3,medium,2026-03-27 22:00:00,2026-03-29 21:00:00,48,idle,Move data to an infrequent-access storage class,High,2.8667,idle
+lambda-24,Lambda,large,2026-03-18 12:00:00,2026-03-20 18:00:00,54,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,High,2.758,drift
+s3-20,S3,large,2026-03-07 04:00:00,2026-03-08 19:00:00,34,drift,Apply an S3 lifecycle policy to move or expire old objects,High,2.574,drift
+ec2-03,EC2,medium,2026-03-23 22:00:00,2026-03-24 03:00:00,6,spike,Investigate the runaway process; set an auto-scaling maximum and a budget alert,High,2.4922,spike
+lambda-23,Lambda,large,2026-03-14 18:00:00,2026-03-16 12:00:00,43,idle,Rightsize to a smaller instance or stop it outside working hours,High,2.215,idle
+ec2-00,EC2,large,2026-03-22 03:00:00,2026-03-22 04:00:00,2,spike,Investigate the runaway process; set an auto-scaling maximum and a budget alert,High,2.2143,spike
+ec2-06,EC2,large,2026-03-21 22:00:00,2026-03-21 23:00:00,2,spike,Investigate the runaway process; set an auto-scaling maximum and a budget alert,High,1.7962,spike
+s3-20,S3,large,2026-03-15 08:00:00,2026-03-15 13:00:00,6,spike,Check for unexpected data egress; review bucket access and request rates,High,1.7826,spike
+ec2-09,EC2,medium,2026-03-05 07:00:00,2026-03-05 09:00:00,3,spike,Investigate the runaway process; set an auto-scaling maximum and a budget alert,High,1.7464,spike
+s3-20,S3,large,2026-03-09 04:00:00,2026-03-09 20:00:00,15,drift,Apply an S3 lifecycle policy to move or expire old objects,High,1.579,drift
+rds-12,RDS,medium,2026-03-05 11:00:00,2026-03-05 12:00:00,2,spike,Investigate the runaway process; set an auto-scaling maximum and a budget alert,High,1.355,spike
+lambda-25,Lambda,small,2026-03-27 00:00:00,2026-03-29 04:00:00,52,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,High,0.5858,drift
+s3-19,S3,medium,2026-03-12 14:00:00,2026-03-12 16:00:00,3,spike,Check for unexpected data egress; review bucket access and request rates,Medium,0.9008,spike
+ec2-08,EC2,small,2026-03-16 08:00:00,2026-03-16 10:00:00,3,spike,Investigate the runaway process; set an auto-scaling maximum and a budget alert,Medium,0.8455,spike
+lambda-26,Lambda,medium,2026-03-15 03:00:00,2026-03-16 06:00:00,28,idle,Rightsize to a smaller instance or stop it outside working hours,Medium,0.7282,idle
+s3-20,S3,large,2026-03-06 10:00:00,2026-03-06 19:00:00,10,drift,Apply an S3 lifecycle policy to move or expire old objects,Medium,0.6682,drift
+s3-16,S3,medium,2026-03-09 03:00:00,2026-03-09 07:00:00,5,spike,Check for unexpected data egress; review bucket access and request rates,Medium,0.5533,spike
+s3-19,S3,medium,2026-03-26 17:00:00,2026-03-26 19:00:00,3,spike,Check for unexpected data egress; review bucket access and request rates,Medium,0.5375,spike
+s3-17,S3,small,2026-03-06 08:00:00,2026-03-06 13:00:00,6,spike,Check for unexpected data egress; review bucket access and request rates,Medium,0.4537,spike
+lambda-23,Lambda,large,2026-03-11 21:00:00,2026-03-12 00:00:00,4,spike,Check for a retry loop or traffic burst; set reserved concurrency and a budget alert,Medium,0.4253,spike
+ebs-29,EBS,medium,2026-03-29 09:00:00,2026-03-29 12:00:00,4,spike,Investigate the runaway process; set an auto-scaling maximum and a budget alert,Medium,0.2528,spike
+s3-21,S3,medium,2026-03-26 23:00:00,2026-03-27 01:00:00,3,spike,Check for unexpected data egress; review bucket access and request rates,Low,0.2101,spike
+ec2-08,EC2,small,2026-03-21 00:00:00,2026-03-21 07:00:00,8,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.1523,drift
+ec2-05,EC2,xlarge,2026-03-23 14:00:00,2026-03-23 14:00:00,1,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.1445,drift
+lambda-24,Lambda,large,2026-03-26 01:00:00,2026-03-26 04:00:00,4,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.1331,spike
+s3-17,S3,small,2026-03-26 16:00:00,2026-03-26 17:00:00,2,spike,Check for unexpected data egress; review bucket access and request rates,Low,0.1309,spike
+s3-20,S3,large,2026-03-08 22:00:00,2026-03-09 01:00:00,4,drift,Apply an S3 lifecycle policy to move or expire old objects,Low,0.1176,drift
+ec2-08,EC2,small,2026-03-21 10:00:00,2026-03-21 12:00:00,2,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.1125,drift
+rds-13,RDS,large,2026-03-12 15:00:00,2026-03-12 15:00:00,1,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.0979,false alarm
+ec2-06,EC2,large,2026-03-14 15:00:00,2026-03-14 15:00:00,1,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.0928,false alarm
+rds-13,RDS,large,2026-03-23 02:00:00,2026-03-23 02:00:00,1,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.0792,false alarm
+ec2-09,EC2,medium,2026-03-21 20:00:00,2026-03-21 21:00:00,2,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.062,drift
+ec2-02,EC2,large,2026-03-09 20:00:00,2026-03-09 20:00:00,1,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.0603,false alarm
+s3-20,S3,large,2026-03-05 14:00:00,2026-03-05 14:00:00,1,drift,Apply an S3 lifecycle policy to move or expire old objects,Low,0.0539,drift
+rds-14,RDS,medium,2026-03-19 13:00:00,2026-03-19 13:00:00,1,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.0531,false alarm
+lambda-22,Lambda,xlarge,2026-03-05 13:00:00,2026-03-05 13:00:00,1,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.0523,false alarm
+rds-14,RDS,medium,2026-03-28 15:00:00,2026-03-28 15:00:00,1,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.0514,false alarm
+lambda-25,Lambda,small,2026-03-26 14:00:00,2026-03-26 17:00:00,4,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.0357,drift
+s3-20,S3,large,2026-03-06 06:00:00,2026-03-06 07:00:00,2,drift,Apply an S3 lifecycle policy to move or expire old objects,Low,0.0347,drift
+ec2-07,EC2,large,2026-03-13 06:00:00,2026-03-13 06:00:00,1,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.0325,false alarm
+s3-20,S3,large,2026-03-06 22:00:00,2026-03-06 22:00:00,1,drift,Apply an S3 lifecycle policy to move or expire old objects,Low,0.0158,drift
+lambda-26,Lambda,medium,2026-03-12 15:00:00,2026-03-12 15:00:00,1,drift,Find and stop the forgotten long-running job; add a scheduled shutdown policy,Low,0.0139,false alarm
+ebs-29,EBS,medium,2026-03-05 00:00:00,2026-03-05 11:00:00,12,drift,Delete old snapshots and apply a snapshot lifecycle policy,Low,0.0068,idle
+ebs-29,EBS,medium,2026-03-05 14:00:00,2026-03-05 14:00:00,1,drift,Delete old snapshots and apply a snapshot lifecycle policy,Low,0.0051,false alarm
+ebs-27,EBS,small,2026-03-05 08:00:00,2026-03-05 08:00:00,1,drift,Delete old snapshots and apply a snapshot lifecycle policy,Low,0.0011,false alarm
+ebs-28,EBS,small,2026-03-12 09:00:00,2026-03-12 09:00:00,1,drift,Delete old snapshots and apply a snapshot lifecycle policy,Low,0.001,false alarm
