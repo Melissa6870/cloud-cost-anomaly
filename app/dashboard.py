@@ -2,16 +2,20 @@
 Cloud cost anomaly dashboard.
 
 Shows detected anomalies, cost-saving recommendations and the model comparison
-for non-technical FinOps users. Run src/recommend.py first, then:
+for non-technical FinOps users, plus a savings calculator by company size. Run src/recommend.py first, then:
 
     streamlit run app/dashboard.py
 """
 
 import os
+import sys
 
 import altair as alt
 import pandas as pd
 import streamlit as st
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+import savings  # noqa: E402
 
 RES, FIG = "results", "figures"
 
@@ -30,6 +34,9 @@ if not os.path.exists(f"{RES}/recommendations.csv"):
     st.stop()
 
 det, recs = load()
+rate = st.sidebar.number_input("Exchange rate (R per US$)", 10.0, 30.0, savings.USD_TO_ZAR, 0.5)
+det["cost_zar"] = det["cost_usd"] * rate
+recs["estimated_waste_zar"] = recs["estimated_waste_usd"] * rate
 
 st.title("AI-Driven Cloud Cost Anomaly Detection")
 st.caption("Detector: XGBoost  |  Test period: days 64-90 of the simulated telemetry  |  "
@@ -37,12 +44,67 @@ st.caption("Detector: XGBoost  |  Test period: days 64-90 of the simulated telem
 
 # Headline numbers
 c1, c2, c3, c4 = st.columns(4)
-c1.metric("Cloud spend in test period", f"${det['cost_usd'].sum():,.2f}")
+c1.metric("Cloud spend in test period", f"R{det['cost_zar'].sum():,.2f}")
 c2.metric("Anomaly incidents raised", f"{len(recs)}")
-c3.metric("Estimated waste flagged", f"${recs['estimated_waste_usd'].sum():,.2f}")
+c3.metric("Estimated waste flagged", f"R{recs['estimated_waste_zar'].sum():,.2f}")
 c4.metric("High-priority actions", f"{(recs['priority'] == 'High').sum()}")
 
-tab_recs, tab_cost, tab_models = st.tabs(["Recommendations", "Cost explorer", "Model comparison"])
+tab_save, tab_recs, tab_cost, tab_models = st.tabs(["Savings calculator", "Recommendations", "Cost explorer", "Model comparison"])
+
+with tab_save:
+    st.subheader("How much could this company save?")
+    st.caption("Pick a company size. The calculator simulates the storage and servers it pays for, "
+               "compares what is allocated with what is actually used, and prices the difference.")
+    preset = st.radio("Company", list(savings.COMPANIES) + ["Custom"], horizontal=True, index=1)
+    staff = (st.number_input("Number of staff", 10, 50000, 1500, 50) if preset == "Custom"
+             else savings.COMPANIES[preset])
+    a1, a2, a3 = st.columns(3)
+    quota = a1.select_slider("Storage quota per staff member (GB)", [100, 250, 500, 1024, 2048], value=savings.QUOTA_GB)
+    target = a2.slider("Target server utilisation (%)", 40, 90, int(savings.TARGET_CPU * 100), 5) / 100
+    headroom = a3.slider("Free space left in each new quota (%)", 0, 50, int(savings.HEADROOM * 100), 5) / 100
+
+    summ, storage, servers = savings.company_savings(staff, quota, target, headroom, rate, results=RES)
+
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("Cloud bill per month", f"R{summ['current_monthly_zar']:,.0f}")
+    m2.metric("Possible saving per month", f"R{summ['saving_monthly_zar']:,.0f}", f"{summ['saving_pct']:.0f}% of the bill")
+    m3.metric("Saving per year", f"R{summ['saving_yearly_zar']:,.0f}")
+    m4.metric(f"Storage used (of {summ['allocated_tb']:,.0f} TB paid for)", f"{summ['used_tb']:,.0f} TB")
+
+    parts = ["Storage quotas", "Server rightsizing", "Stopping idle servers", "Fixing detected anomalies"]
+    st.altair_chart(alt.Chart(pd.DataFrame({"Source": parts, "Saving (R per month)": [summ[p] for p in parts]}))
+                    .mark_bar().encode(x="Saving (R per month):Q", y=alt.Y("Source:N", sort="-x", title=None, axis=alt.Axis(labelLimit=250)),
+                                       tooltip=["Source", alt.Tooltip("Saving (R per month):Q", format=",.0f")])
+                    .properties(height=200, title="Where the saving comes from"), width="stretch")
+
+    st.markdown("#### Storage: allocated vs actually used")
+    sample = storage.sort_values("years_of_service", ascending=False).head(25)
+    long = sample.melt(id_vars=["staff_id", "years_of_service"], value_vars=["allocated_gb", "used_gb", "new_quota_gb"],
+                       var_name="kind", value_name="GB")
+    long["kind"] = long["kind"].map({"allocated_gb": "Paid for now", "used_gb": "Actually used", "new_quota_gb": "Recommended quota"})
+    st.altair_chart(alt.Chart(long).mark_bar().encode(
+        x=alt.X("staff_id:N", title="Staff member (longest-serving first)", sort=None),
+        xOffset="kind:N", y=alt.Y("GB:Q"),
+        color=alt.Color("kind:N", title=None, scale=alt.Scale(domain=["Paid for now", "Actually used", "Recommended quota"],
+                                                              range=["#b0b0b0", "#1f77b4", "#2ca02c"])),
+        tooltip=["staff_id", "years_of_service", "kind", "GB"]).properties(height=300), width="stretch")
+    st.caption(f"Every staff member is given {quota:,} GB. On average they use "
+               f"{storage['used_gb'].mean():,.0f} GB, so most of the space is paid for but empty.")
+
+    st.markdown("#### Servers: current size vs recommended size")
+    st.dataframe(servers[["server_id", "service", "size", "p95_cpu", "recommended_size", "action",
+                          "current_cost_zar", "new_cost_zar", "saving_zar"]].sort_values("saving_zar", ascending=False),
+                 hide_index=True, width="stretch",
+                 column_config={"server_id": "Server", "service": "Service", "size": "Size now",
+                                "recommended_size": "Recommended size", "action": "Action",
+                                "p95_cpu": st.column_config.NumberColumn("Busy-hour CPU", format="percent"),
+                                "current_cost_zar": st.column_config.NumberColumn("Cost now (R/month)", format="R%.0f"),
+                                "new_cost_zar": st.column_config.NumberColumn("Cost after (R/month)", format="R%.0f"),
+                                "saving_zar": st.column_config.NumberColumn("Saving (R/month)", format="R%.0f")})
+    st.download_button("Download savings plan (CSV)", servers.to_csv(index=False), "server_savings.csv")
+    st.caption("Estimates on simulated data. Assumptions: AWS list prices converted at the exchange rate in the sidebar, "
+               f"one server per {savings.STAFF_PER_SERVER} staff and one database per {savings.STAFF_PER_DATABASE} staff, "
+               f"storage at US${savings.STORAGE_USD_PER_GB}/GB-month, 730 hours per month.")
 
 with tab_recs:
     st.subheader("Cost-saving recommendations")
@@ -52,32 +114,32 @@ with tab_recs:
     shown = recs[recs["priority"].isin(priorities) & recs["detected_type"].isin(types)]
     st.dataframe(
         shown[["priority", "resource_id", "service", "detected_type", "start", "hours",
-               "estimated_waste_usd", "recommended_action"]],
+               "estimated_waste_zar", "recommended_action"]],
         hide_index=True, width="stretch",
-        column_config={"estimated_waste_usd": st.column_config.NumberColumn("Est. waste (USD)", format="$%.2f"),
+        column_config={"estimated_waste_zar": st.column_config.NumberColumn("Est. waste (R)", format="R%.2f"),
                        "detected_type": "Type", "resource_id": "Resource", "recommended_action": "Recommended action"})
     st.download_button("Download recommendations (CSV)", shown.to_csv(index=False), "recommendations.csv")
 
-    by_type = recs.groupby("detected_type")["estimated_waste_usd"].sum().reset_index()
+    by_type = recs.groupby("detected_type")["estimated_waste_zar"].sum().reset_index()
     st.altair_chart(alt.Chart(by_type).mark_bar().encode(
-        x=alt.X("estimated_waste_usd:Q", title="Estimated waste (USD)"),
+        x=alt.X("estimated_waste_zar:Q", title="Estimated waste (R)"),
         y=alt.Y("detected_type:N", title="Anomaly type", sort="-x"),
     ).properties(height=160, title="Where the money is being wasted"), width="stretch")
 
 with tab_cost:
     st.subheader("Hourly cost per resource")
-    worst = recs.groupby("resource_id")["estimated_waste_usd"].sum().sort_values(ascending=False).index.tolist()
+    worst = recs.groupby("resource_id")["estimated_waste_zar"].sum().sort_values(ascending=False).index.tolist()
     others = sorted(set(det["resource_id"]) - set(worst))
     rid = st.selectbox("Resource (most wasteful first)", worst + others)
     one = det[det["resource_id"] == rid]
     line = alt.Chart(one).mark_line(strokeWidth=1).encode(
-        x=alt.X("timestamp:T", title="Time"), y=alt.Y("cost_usd:Q", title="Hourly cost (USD)"))
+        x=alt.X("timestamp:T", title="Time"), y=alt.Y("cost_zar:Q", title="Hourly cost (R)"))
     flags = alt.Chart(one[one["flag"] == 1]).mark_circle(size=40, color="red").encode(
-        x="timestamp:T", y="cost_usd:Q", tooltip=["timestamp:T", "cost_usd:Q", "cpu_util:Q", "score:Q"])
+        x="timestamp:T", y="cost_zar:Q", tooltip=["timestamp:T", "cost_zar:Q", "cpu_util:Q", "score:Q"])
     st.altair_chart((line + flags).properties(height=320), width="stretch")
     st.caption("Red dots = hours flagged as anomalous by the detector.")
     st.dataframe(recs[recs["resource_id"] == rid][["start", "end", "hours", "detected_type", "priority",
-                                                    "estimated_waste_usd", "recommended_action"]],
+                                                    "estimated_waste_zar", "recommended_action"]],
                  hide_index=True, width="stretch")
 
 with tab_models:

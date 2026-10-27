@@ -20,7 +20,8 @@ Everything is open-source and reproducible with a fixed random seed.
 | `src/evaluate.py` | Comparison table, ROC curves, Wilcoxon signed-rank tests and 30/60/90-day drift analysis |
 | `src/nab_check.py` | Real-data check on the NAB realAWSCloudwatch benchmark |
 | `src/recommend.py` | Rule-mapped recommendation engine and its accuracy |
-| `app/dashboard.py` | Streamlit dashboard for anomalies and recommendations |
+| `src/savings.py` | Company savings calculator: allocated vs used storage and servers, rightsizing and savings in Rand by company size |
+| `app/dashboard.py` | Streamlit dashboard: savings calculator, anomalies and recommendations |
 | `data/processed/` | Generated dataset and anomaly event log |
 | `results/` | All result tables (CSV) |
 | `figures/` | All figures (PNG, 300 dpi) |
@@ -42,6 +43,7 @@ python src/train_lstm.py
 python src/evaluate.py
 python src/nab_check.py
 python src/recommend.py
+python src/savings.py
 streamlit run app/dashboard.py
 ```
 
