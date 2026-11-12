@@ -1,4 +1,4 @@
-company,staff,servers,allocated_tb,used_tb,current_monthly_zar,saving_monthly_zar,saving_yearly_zar,saving_pct,Storage quotas,Server rightsizing,Stopping idle servers,Fixing detected anomalies
-Small company,200,5,200.0,20.95,118547.36,81616.47,979397.7,68.85,68354.71,5045.76,7568.64,647.36
-Medium company,1000,24,1000.67,101.52,552998.22,388343.23,4660118.81,70.23,344712.13,18921.6,21602.16,3107.34
-Large company,5000,120,5004.59,518.05,2805253.95,1922138.79,23065665.53,68.52,1722904.88,150899.76,32797.44,15536.71
+company,staff,servers,allocated_tb,used_tb,current_monthly_zar,saving_monthly_zar,saving_yearly_zar,saving_pct,Reserved storage,Server rightsizing,Stopping idle servers,Fixing detected anomalies
+Small company,200,5,200.0,20.95,328672.16,251017.28,3012207.4,76.37,237755.52,5045.76,7568.64,647.36
+Medium company,1000,24,1000.67,101.52,1604325.85,1242629.82,14911557.86,77.45,1198998.72,18921.6,21602.16,3107.34
+Large company,5000,120,5004.59,518.05,8063199.33,6191946.55,74303358.6,76.79,5992712.64,150899.76,32797.44,15536.71

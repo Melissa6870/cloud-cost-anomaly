@@ -60,7 +60,7 @@ def isolation_forest(train, test, seed):
     return pred, scores, {"n_estimators": 200, "contamination": round(contamination, 4)}
 
 
-def xgboost(train, test, seed):
+def xgboost(train, test, seed, return_model=False):
     """Supervised: learns from labelled examples of normal and anomalous hours."""
     y = train["is_anomaly"]
     weight = (y == 0).sum() / max((y == 1).sum(), 1)  # balances the rare anomaly class
@@ -70,6 +70,8 @@ def xgboost(train, test, seed):
     model.fit(train[FEATURES], y)
     scores = model.predict_proba(test[FEATURES])[:, 1]
     pred = (scores >= 0.5).astype(int)
+    if return_model:
+        return pred, scores, params, model
     return pred, scores, params
 
 

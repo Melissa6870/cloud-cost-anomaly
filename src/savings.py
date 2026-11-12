@@ -7,8 +7,9 @@ what is allocated with what is actually used, and prices the difference in Rand.
 
 Three sources of saving are counted:
 
-    storage   - every staff member gets the same quota (like a OneDrive allowance),
-                but most use a small part of it. Quotas are moved to the smallest
+    storage   - every staff member gets the same reserved quota (like a OneDrive allowance).
+                Reserved storage is billed for its full size, not the part that is filled,
+                but most people use a small part of it. Quotas are moved to the smallest
                 tier that covers each person's use plus headroom.
     servers   - servers are often bought one size too big. Each one is rightsized
                 to the smallest size whose capacity covers its busiest hours
@@ -37,7 +38,7 @@ from generate_data import SERVICES, SIZES
 
 USD_TO_ZAR = 18.0              # exchange rate assumption (R per US$)
 HOURS_PER_MONTH = 730
-STORAGE_USD_PER_GB = 0.023     # cloud file storage (AWS S3 Standard) per GB-month
+STORAGE_USD_PER_GB = 0.08      # reserved (provisioned) storage, AWS EBS gp3, per GB-month: billed whether filled or not
 QUOTA_GB = 1024                # standard quota per staff member (1 TB)
 QUOTA_TIERS_GB = [50, 100, 250, 500, 1024, 2048]
 STAFF_PER_SERVER = 50          # one application server per 50 staff
@@ -137,7 +138,7 @@ def company_savings(staff, quota_gb=QUOTA_GB, target_cpu=TARGET_CPU, headroom=HE
     anomaly = anomaly_waste_per_server_month(rate, results) * len(servers)
 
     current = storage["current_cost_zar"].sum() + servers["current_cost_zar"].sum() + anomaly
-    saving = {"Storage quotas": storage["saving_zar"].sum(),
+    saving = {"Reserved storage": storage["saving_zar"].sum(),
               "Server rightsizing": servers.loc[servers["recommended_size"] != "stopped", "saving_zar"].sum(),
               "Stopping idle servers": servers.loc[servers["recommended_size"] == "stopped", "saving_zar"].sum(),
               "Fixing detected anomalies": anomaly}
@@ -165,7 +166,7 @@ def main():
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    parts = ["Storage quotas", "Server rightsizing", "Stopping idle servers", "Fixing detected anomalies"]
+    parts = ["Reserved storage", "Server rightsizing", "Stopping idle servers", "Fixing detected anomalies"]
     colours = ["#1f77b4", "#2ca02c", "#ff7f0e", "#d62728"]
     fig, ax = plt.subplots(figsize=(8, 4))
     labels = [f"{r.company}\n({r.staff:,} staff)" for r in table.itertuples()]

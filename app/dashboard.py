@@ -95,7 +95,7 @@ with tab_save:
     m3.metric("Saving per year", f"R{summ['saving_yearly_zar']:,.0f}")
     m4.metric(f"Storage used (of {summ['allocated_tb']:,.0f} TB paid for)", f"{summ['used_tb']:,.0f} TB")
 
-    parts = ["Storage quotas", "Server rightsizing", "Stopping idle servers", "Fixing detected anomalies"]
+    parts = ["Reserved storage", "Server rightsizing", "Stopping idle servers", "Fixing detected anomalies"]
     st.altair_chart(alt.Chart(pd.DataFrame({"Source": parts, "Saving (R per month)": [summ[p] for p in parts]}))
                     .mark_bar().encode(x="Saving (R per month):Q", y=alt.Y("Source:N", sort="-x", title=None, axis=alt.Axis(labelLimit=250)),
                                        tooltip=["Source", alt.Tooltip("Saving (R per month):Q", format=",.0f")])
@@ -128,7 +128,7 @@ with tab_save:
     st.download_button("Download savings plan (CSV)", servers.to_csv(index=False), "server_savings.csv")
     st.caption("Estimates on simulated data. Assumptions: AWS list prices converted at the exchange rate in the sidebar, "
                f"one server per {savings.STAFF_PER_SERVER} staff and one database per {savings.STAFF_PER_DATABASE} staff, "
-               f"storage at US${savings.STORAGE_USD_PER_GB}/GB-month, 730 hours per month.")
+               f"reserved storage at US${savings.STORAGE_USD_PER_GB}/GB-month (billed for its full size), 730 hours per month.")
 
 with tab_recs:
     st.subheader("Cost-saving recommendations")

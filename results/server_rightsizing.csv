@@ -1,0 +1,25 @@
+server_id,service,size,p95_cpu,recommended_size,action,current_cost_zar,new_cost_zar,saving_zar
+ec2-002,EC2,medium,0.02,stopped,Stop: practically unused,2522.88,0.0,2522.88
+ec2-006,EC2,medium,0.02,stopped,Stop: practically unused,2522.88,0.0,2522.88
+rds-020,RDS,large,0.02,stopped,Stop: practically unused,8987.76,0.0,8987.76
+ec2-018,EC2,large,0.02,stopped,Stop: practically unused,5045.76,0.0,5045.76
+ec2-014,EC2,medium,0.042,stopped,Stop: practically unused,2522.88,0.0,2522.88
+ec2-013,EC2,medium,0.064,small,Downsize medium to small,2522.88,1261.44,1261.44
+ec2-011,EC2,large,0.107,small,Downsize large to small,5045.76,1261.44,3784.32
+ec2-005,EC2,medium,0.242,small,Downsize medium to small,2522.88,1261.44,1261.44
+ec2-001,EC2,large,0.258,medium,Downsize large to medium,5045.76,2522.88,2522.88
+ec2-000,EC2,large,0.263,medium,Downsize large to medium,5045.76,2522.88,2522.88
+ec2-003,EC2,xlarge,0.272,large,Downsize xlarge to large,10091.52,5045.76,5045.76
+ec2-009,EC2,large,0.273,medium,Downsize large to medium,5045.76,2522.88,2522.88
+ec2-016,EC2,medium,0.353,medium,Keep,2522.88,2522.88,0.0
+ec2-007,EC2,medium,0.386,medium,Keep,2522.88,2522.88,0.0
+rds-021,RDS,large,0.409,large,Keep,8987.76,8987.76,0.0
+ec2-012,EC2,large,0.424,large,Keep,5045.76,5045.76,0.0
+ec2-017,EC2,large,0.443,large,Keep,5045.76,5045.76,0.0
+ec2-010,EC2,medium,0.463,medium,Keep,2522.88,2522.88,0.0
+ec2-015,EC2,medium,0.511,medium,Keep,2522.88,2522.88,0.0
+rds-022,RDS,xlarge,0.54,xlarge,Keep,17975.52,17975.52,0.0
+ec2-004,EC2,large,0.553,large,Keep,5045.76,5045.76,0.0
+rds-023,RDS,large,0.6,large,Keep,8987.76,8987.76,0.0
+ec2-019,EC2,large,0.658,large,Keep,5045.76,5045.76,0.0
+ec2-008,EC2,medium,0.786,medium,Keep,2522.88,2522.88,0.0

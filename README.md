@@ -21,6 +21,7 @@ Everything is open-source and reproducible with a fixed random seed.
 | `src/nab_check.py` | Real-data check on the NAB realAWSCloudwatch benchmark |
 | `src/recommend.py` | Rule-mapped recommendation engine and its accuracy |
 | `src/savings.py` | Company savings calculator: allocated vs used storage and servers, rightsizing and savings in Rand by company size |
+| `src/extra_figures.py` | Extra thesis figures: confusion matrices, XGBoost feature importance, daily F1, waste by type, storage use and server rightsizing |
 | `app/dashboard.py` | Streamlit dashboard: savings calculator, anomalies and recommendations |
 | `data/processed/` | Generated dataset and anomaly event log |
 | `results/` | All result tables (CSV) |
@@ -44,6 +45,7 @@ python src/evaluate.py
 python src/nab_check.py
 python src/recommend.py
 python src/savings.py
+python src/extra_figures.py
 streamlit run app/dashboard.py
 ```
 
